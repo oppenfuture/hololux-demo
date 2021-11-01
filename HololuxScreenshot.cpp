@@ -97,6 +97,16 @@ int HololuxScreenshot::loadModel(const char *modelFile) {
     return -1;
   }
 
+  model_node_ = SceneNode::FindNodeByName(
+    HLGetModelNodeName(renderer_), Engine::Instance().Scene().get()
+  );
+  if (!model_node_) {
+    std::cerr << "Failed to find model node" << std::endl;
+    return -1;
+  }
+
+  initial_pose_ = model_node_->WorldRbt();
+
   return 0;
 }
 
@@ -134,19 +144,16 @@ int HololuxScreenshot::getImageByAngle(
   uint8_t *buffer,
   int width,
   int height,
-  float angleInRadian,
+  float angle_in_radian,
   std::array<float, 4> clear_color
 ) {
-  auto &en = Engine::Instance();
-  auto node = SceneNode::FindNodeByName(HLGetModelNodeName(renderer_), en.Scene().get());
-  if (!node) {
-    std::cerr << "Failed to find model node" << std::endl;
+  if (!model_node_) {
     return -1;
   }
 
-  auto halfAngle = angleInRadian * 0.5f;
-  auto rotation = math::Rbt(glm::quat(std::cos(halfAngle), 0.0f, std::sin(halfAngle), 0.0f));
-  node->SetWorldRbt(math::Rbt::DoMToOWrtA(rotation, node->WorldRbt(), math::Rbt()));
+  auto half_angle = angle_in_radian * 0.5f;
+  auto rotation = math::Rbt(glm::quat(std::cos(half_angle), 0.0f, std::sin(half_angle), 0.0f));
+  model_node_->SetWorldRbt(math::Rbt::DoMToOWrtA(rotation, initial_pose_, math::Rbt()));
 
   const char *rt_name = "rt:hololux:screenshot";
   if (current_width_ != (uint32_t)width || current_height_ != (uint32_t)height) {
@@ -162,6 +169,7 @@ int HololuxScreenshot::getImageByAngle(
     current_height_ = (uint32_t)height;
   }
 
+  auto &en = Engine::Instance();
   auto fb = bd_cast<InternalFramebuffer>(en.ResrcMgr().Find(rt_name));
   if (!fb) {
     std::cerr << "Failed to find render target " << rt_name << std::endl;

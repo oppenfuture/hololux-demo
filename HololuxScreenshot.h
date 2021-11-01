@@ -41,6 +41,8 @@ private:
   MineolaHelper helper_;
   PHOLOLUXRENDERER renderer_{nullptr};
   bool download_successful_{false};
+  std::shared_ptr<mineola::SceneNode> model_node_;
+  mineola::math::Rbt initial_pose_;
   uint32_t current_width_{0};
   uint32_t current_height_{0};
 };
