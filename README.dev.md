@@ -21,3 +21,11 @@ cmake ..
 make -j
 python ../demo/collect_depends.py . ../demo/dependencies
 ```
+
+# Build `hololux_demo`
+
+```bash
+mkdir build && cd build
+cmake ..
+make -j
+```
