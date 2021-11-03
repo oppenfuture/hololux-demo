@@ -85,5 +85,5 @@ if __name__ == '__main__':
   finder = LibFinder(Path(sys.argv[1]))
   collector = Collector(Path(sys.argv[2]))
   collector.collect_hololux(finder.build_folder)
-  for library in ['mineola', 'glm', 'imgpp', 'libjpeg-turbo', 'PNG', 'ZLIB']:
+  for library in ['mineola', 'glm', 'imgpp', 'libjpeg-turbo', 'PNG', 'ZLIB', 'Boost']:
     collector.collect_library(finder.find(library))
