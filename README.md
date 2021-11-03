@@ -43,7 +43,9 @@ make test
 
 ## 集成到现有工程
 
-推荐用直接引入源文件的方式将`HololuxScreenshot`集成到现有工程。
+可以使用引入源文件或链接到动态库的方式将`HololuxScreenShot`集成到现有工程。
+
+### 引用源文件
 
 以下源文件需要被加入工程：
 
@@ -59,11 +61,37 @@ make test
 - `glm/`
 - `imgpp/`
 - `mineola/`
+- `boost`
 - `HololuxRenderer.h`
 - `NetworkInterface.h`
 
 `dependencies/lib/`下的以下文件需要被链接到目标二进制文件：
 
 - `libhololux.so`
+
+### 链接到动态库
+
+仓库根目录下的以下文件需要被加入`include`路径：
+
+- `EGLHelper.h`
+- `MineolaHelper.h`
+- `HololuxScreenshot.h`
+
+`dependencies/include/`下的以下文件（夹）需要被加入`include`路径：
+
+- `glm/`
+- `imgpp/`
+- `mineola/`
+- `boost`
+- `HololuxRenderer.h`
+- `NetworkInterface.h`
+
+`dependencies/lib/`下的以下文件需要被链接到目标二进制文件：
+
+- `libhololux.so`
+
+`artifact/`下的以下文件需要被链接到目标二进制文件：
+
+- `libhololux_demo.so`
 
 `dependencies/`下的其他文件只用于构建测试程序，并不是`HololuxScreenshot`的依赖。

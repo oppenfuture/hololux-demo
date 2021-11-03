@@ -24,8 +24,18 @@ set(SOURCES
 add_executable(buildtest ${SOURCES} HololuxScreenshotBuildTest.cpp)
 target_link_libraries(buildtest hololux OpenGL::EGL)
 
-add_library(hololux_demo ${SOURCES})
+add_library(hololux_demo SHARED ${SOURCES})
 target_link_libraries(hololux_demo PUBLIC hololux OpenGL::EGL)
+
+add_custom_command(TARGET hololux_demo
+  COMMAND
+    ${CMAKE_COMMAND}
+    -E
+    copy
+    ${CMAKE_CURRENT_BINARY_DIR}/libhololux_demo.so
+    ${CMAKE_CURRENT_SOURCE_DIR}/artifact
+  COMMENT "Copy build artifact"
+)
 
 enable_testing()
 
