@@ -7,6 +7,8 @@
 - `Linux x86_64`
 - `libstdc++`
 - 支持`EGL`和`OpenGL ES 3.2`的显卡驱动
+- `libhololux.so`
+- `libturbojpeg.so.0`
 
 如果当前硬件和系统支持`EGL`和`OpenGL ES`，`/usr/lib/x86_64-linux-gnu/`下一般会有以下文件：
 - `libEGL.so`
@@ -16,6 +18,10 @@
 ```bash
 sudo apt install libegl1-mesa
 ```
+
+`libhololux.so`和`libturbojpeg.so.0`位于`dependencies/lib/`下，需要能在运行时被搜索到。
+
+`dependencies/`下的其他文件只用于构建测试程序，并不是运行时依赖。
 
 ## 构建和测试示例工程
 
@@ -46,12 +52,6 @@ make test
 
 - `IHololuxScreenshot.h`
 
-`dependencies/lib/`下的以下文件需要被链接到目标二进制文件：
-
-- `libhololux.so`
-
 `artifact/`下的以下文件需要被链接到目标二进制文件：
 
 - `libhololux_demo.so`
-
-`dependencies/`下的其他文件只用于构建测试程序，并不是`IHololuxScreenshot`的依赖。

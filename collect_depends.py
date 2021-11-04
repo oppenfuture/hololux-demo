@@ -1,5 +1,5 @@
 from pathlib import Path
-import re, shutil, sys
+import re, shutil, sys, subprocess
 
 class Library:
   def __init__(self):
@@ -62,20 +62,37 @@ class Collector:
     for name in library.lib_names:
       found = False
       for folder in library.lib_folders:
-        src = folder / f'lib{name}.a'
-        if src.exists():
-          shutil.copy(src, self.lib_folder)
-          found = True
+        for lib in [f'lib{name}.a', f'lib{name}.so']:
+          src = folder / lib
+          if src.exists():
+            copy_symlink_and_file(src, self.lib_folder)
+            found = True
+            break
+        if found:
           break
       if not found:
         raise RuntimeError(f'Library {src.name} not found in {library.lib_folders}')
 
   def collect_hololux(self, build_folder: Path):
-    wolf_header_folder = build_folder / '..' / '..' / 'wolf' / 'include'
+    wolf_header_folder = build_folder / '..' / '..' / '..' / '..' / 'wolf' / 'include'
     shutil.copy(wolf_header_folder / 'HololuxRenderer.h', self.include_folder)
     shutil.copy(wolf_header_folder / 'NetworkInterface.h', self.include_folder)
-    shutil.copy(build_folder / 'libwolf.a', self.lib_folder)
-    shutil.copy(build_folder / 'libhololux.so', self.lib_folder)
+    hololux_lib = 'libhololux.so'
+    shutil.copy(build_folder / hololux_lib, self.lib_folder)
+    subprocess.check_call(['patchelf', '--set-rpath', '$ORIGIN', str(self.lib_folder / hololux_lib)])
+
+def copy_symlink_and_file(src, dst_folder):
+  if src.is_symlink():
+    (dst_folder / src.name).unlink(missing_ok=True)
+    shutil.copy(src, dst_folder, follow_symlinks=False)
+    link = src.readlink()
+    if link.is_absolute():
+      raise RuntimeError(f"The link target {link} of {src} is absolute")
+    if len(link.parts) != 1:
+      raise RuntimeError(f"The link target {link} of {src} is not in the same directory")
+    copy_symlink_and_file(src.parent / link, dst_folder)
+  else:
+    shutil.copy(src, dst_folder, follow_symlinks=False)
 
 if __name__ == '__main__':
   if len(sys.argv) < 3:
