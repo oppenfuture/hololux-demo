@@ -31,23 +31,11 @@ std::ostream& operator<<(std::ostream& os, const GLInfo &info) {
 }
 
 int main() {
-  // Test OpenGL context.
-  {
-    EGLHelper helper;
-    if (!helper.Initialize(EGL_OPENGL_API)) {
-      return 1;
-    } else {
-      std::cerr << "Created OpenGL API: " << GetGLInfo() << std::endl;
-    }
-  }
-  // Test OpenGL ES context.
-  {
-    EGLHelper helper;
-    if (!helper.Initialize(EGL_OPENGL_ES_API)) {
-      return 1;
-    } else {
-      std::cerr << "Created OpenGL ES API: " << GetGLInfo() << std::endl;
-    }
+  EGLHelper helper;
+  if (!helper.Initialize(EGL_OPENGL_ES_API)) {
+    return 1;
+  } else {
+    std::cerr << "Created OpenGL ES API: " << GetGLInfo() << std::endl;
   }
   return 0;
 }

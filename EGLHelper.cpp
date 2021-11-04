@@ -14,6 +14,11 @@ bool EGLHelper::Initialize(EGLint api) {
     return false;
   }
 
+  if (api == EGL_OPENGL_API) {
+    std::cerr << "OpenGL API not supported" << std::endl;
+    return false;
+  }
+
   const EGLint config_attribs[] = {
     EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
     EGL_BLUE_SIZE, 8,
@@ -47,16 +52,37 @@ bool EGLHelper::Initialize(EGLint api) {
     EGL_NONE,
   };
 
-  display_ = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+  int version = gladLoaderLoadEGL(EGL_NO_DISPLAY);
+  if (version == 0) {
+    std::cerr << "gladLoaderLoadEGL(NULL) failed" << std::endl;
+    return false;
+  }
+
+  EGLDeviceEXT device;
+  EGLint num_devices = 0;
+  auto status = eglQueryDevicesEXT(1, &device, &num_devices);
+  if (status == EGL_FALSE) {
+    std::cerr << "eglQueryDevicesEXT failed" << std::endl;
+    return false;
+  }
+
+  display_ = eglGetPlatformDisplayEXT(EGL_PLATFORM_DEVICE_EXT, device, nullptr);
   if (display_ == EGL_NO_DISPLAY) {
     std::cerr << "eglGetDisplay failed" << std::endl;
     return false;
   }
 
   EGLint major = 0, minor = 0;
-  auto status = eglInitialize(display_, &major, &minor);
+  status = eglInitialize(display_, &major, &minor);
   if (status == EGL_FALSE) {
     std::cerr << "eglInitialize failed" << std::endl;
+    return false;
+  }
+
+  version = 0;
+  version = gladLoaderLoadEGL(display_);
+  if (version == 0) {
+    std::cerr << "gladLoaderLoadEGL(display_) failed" << std::endl;
     return false;
   }
 
