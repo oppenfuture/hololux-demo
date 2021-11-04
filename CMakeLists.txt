@@ -21,11 +21,11 @@ set(SOURCES
   HololuxScreenshot.cpp
 )
 
-add_executable(buildtest ${SOURCES} HololuxScreenshotBuildTest.cpp)
-target_link_libraries(buildtest hololux OpenGL::EGL)
-
 add_library(hololux_demo SHARED ${SOURCES})
 target_link_libraries(hololux_demo PUBLIC hololux OpenGL::EGL)
+
+add_executable(buildtest HololuxScreenshotBuildTest.cpp)
+target_link_libraries(buildtest hololux_demo)
 
 add_custom_command(TARGET hololux_demo
   COMMAND

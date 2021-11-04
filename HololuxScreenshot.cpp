@@ -196,3 +196,7 @@ int HololuxScreenshot::getImageByAngle(
 HololuxScreenshot::~HololuxScreenshot() {
   HLDestroyRenderer(renderer_);
 }
+
+IHololuxScreenshot *IHololuxScreenshot::create() {
+  return new HololuxScreenshot;
+}

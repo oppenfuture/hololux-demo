@@ -1,8 +1,11 @@
-#include "HololuxScreenshot.h"
+#include "IHololuxScreenshot.h"
 #include <iostream>
+#include <vector>
+#include <glm/glm.hpp>
+#include <imgpp/imgpp.hpp>
 #include <imgpp/loadersext.hpp>
 
-bool CheckImage(const char *image_file_name, float angle_in_radian, HololuxScreenshot &app) {
+bool CheckImage(const char *image_file_name, float angle_in_radian, IHololuxScreenshot &app) {
   imgpp::Img image;
   if (!imgpp::Load(image_file_name, image, true)) {
     std::cerr << "Failed to load ground truth image" << std::endl;
@@ -40,28 +43,28 @@ bool CheckImage(const char *image_file_name, float angle_in_radian, HololuxScree
 }
 
 int main() {
-  HololuxScreenshot app;
+  auto app = std::unique_ptr<IHololuxScreenshot>(IHololuxScreenshot::create());
 
-  auto result = app.init();
+  auto result = app->init();
   if (result != 0) {
     return result;
   }
 
-  result = app.loadModel("data/Adidas_shoe_43287072668.hlf");
+  result = app->loadModel("data/Adidas_shoe_43287072668.hlf");
   if (result != 0) {
     return result;
   }
 
-  result = app.setCamera(0.0f, 0.0f, 0.6f, glm::radians(40.0f));
+  result = app->setCamera(0.0f, 0.0f, 0.6f, glm::radians(40.0f));
   if (result != 0) {
     return result;
   }
 
-  if (!CheckImage("data/expected30.png", glm::radians(30.0f), app)) {
+  if (!CheckImage("data/expected30.png", glm::radians(30.0f), *app)) {
     return -1;
   }
 
-  if (!CheckImage("data/expected60.png", glm::radians(60.0f), app)) {
+  if (!CheckImage("data/expected60.png", glm::radians(60.0f), *app)) {
     return -1;
   }
 

@@ -2,19 +2,20 @@
 
 #include <HololuxRenderer.h>
 #include "MineolaHelper.h"
+#include "IHololuxScreenshot.h"
 
-class HololuxScreenshot {
+class HololuxScreenshot : public IHololuxScreenshot {
 public:
   HololuxScreenshot() = default;
 
   // Initialize the render engine. Return 0 upon success.
-  int init();
+  int init() override;
 
   // Load Hololux LightField model. Return 0 upon success.
-  int loadModel(const char *modelFile);
+  int loadModel(const char *modelFile) override;
 
   // Set camera position and fov. Return 0 upon success.
-  int setCamera(float x, float y, float z, float fovYInRadian);
+  int setCamera(float x, float y, float z, float fovYInRadian) override;
 
   // Rotate the model by [angleInRadian] around world Y axis from the initial pose,
   // set the clear color (RGBA, [0.0 - 1.0]),
@@ -28,7 +29,7 @@ public:
     int height,
     float angleInRadian,
     std::array<float, 4> clear_color
-  );
+  ) override;
 
   // Destroy all resources.
   ~HololuxScreenshot();

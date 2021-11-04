@@ -37,54 +37,15 @@ make test
 
 ## 工程结构
 
-本工程主要提供了`HololuxScreenshot`类，它封装了`EGL`、渲染引擎和`hololux`渲染器的创建和销毁，支持从本地加载光场模型文件，并将渲染结果读回内存。
+本工程主要提供了`IHololuxScreenshot`类，它封装了`EGL`、渲染引擎和`hololux`渲染器的创建和销毁，支持从本地加载光场模型文件，并将渲染结果读回内存。
 
-`HololuxScreenshot`对象在析构时会释放所有图形资源，包括`EGLContext`和`EGLDisplay`。因此，用户只应该创建一个`HololuxScreenshot`对象，直到上一个对象被销毁之后才可以创建新的对象。
+`IHololuxScreenshot`对象在析构时会释放所有图形资源，包括`EGLContext`和`EGLDisplay`。因此，用户只应该创建一个`IHololuxScreenshot`对象，直到上一个对象被销毁之后才可以创建新的对象。
 
 ## 集成到现有工程
 
-可以使用引入源文件或链接到动态库的方式将`HololuxScreenShot`集成到现有工程。
-
-### 引用源文件
-
-以下源文件需要被加入工程：
-
-- `EGLHelper.h`
-- `EGLHelper.cpp`
-- `MineolaHelper.h`
-- `MineolaHelper.cpp`
-- `HololuxScreenshot.h`
-- `HololuxScreenshot.cpp`
-
-`dependencies/include/`下的以下文件（夹）需要被加入`include`路径：
-
-- `glm/`
-- `imgpp/`
-- `mineola/`
-- `boost`
-- `HololuxRenderer.h`
-- `NetworkInterface.h`
-
-`dependencies/lib/`下的以下文件需要被链接到目标二进制文件：
-
-- `libhololux.so`
-
-### 链接到动态库
-
 仓库根目录下的以下文件需要被加入`include`路径：
 
-- `EGLHelper.h`
-- `MineolaHelper.h`
-- `HololuxScreenshot.h`
-
-`dependencies/include/`下的以下文件（夹）需要被加入`include`路径：
-
-- `glm/`
-- `imgpp/`
-- `mineola/`
-- `boost`
-- `HololuxRenderer.h`
-- `NetworkInterface.h`
+- `IHololuxScreenshot.h`
 
 `dependencies/lib/`下的以下文件需要被链接到目标二进制文件：
 
@@ -94,4 +55,4 @@ make test
 
 - `libhololux_demo.so`
 
-`dependencies/`下的其他文件只用于构建测试程序，并不是`HololuxScreenshot`的依赖。
+`dependencies/`下的其他文件只用于构建测试程序，并不是`IHololuxScreenshot`的依赖。
