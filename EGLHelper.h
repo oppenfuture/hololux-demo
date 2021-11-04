@@ -1,6 +1,6 @@
 #pragma once
 
-#include <EGL/egl.h>
+#include <glad/egl.h>
 
 class EGLHelper {
 public:
