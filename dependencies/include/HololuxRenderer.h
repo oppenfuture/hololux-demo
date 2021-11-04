@@ -156,6 +156,14 @@ const char *HLGetCameraName(PHOLOLUXRENDERER renderer);
  */
 const char *HLGetModelNodeName(PHOLOLUXRENDERER renderer);
 
+/**
+ * @brief Do theta phi constraint apply to geometry.
+ *
+ * @param renderer Pointer to the Hololux renderer instance, created by HLCreateRenderer.
+ * @return true if be snapped, false otherwise.
+*/
+bool HLGeometrySnapToBoudary(PHOLOLUXRENDERER renderer);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -154,6 +154,9 @@ int HololuxScreenshot::getImageByAngle(
   auto half_angle = angle_in_radian * 0.5f;
   auto rotation = math::Rbt(glm::quat(std::cos(half_angle), 0.0f, std::sin(half_angle), 0.0f));
   model_node_->SetWorldRbt(math::Rbt::DoMToOWrtA(rotation, initial_pose_, math::Rbt()));
+  if (HLGeometrySnapToBoudary(renderer_)) {
+    std::clog << "The angle out of range,and be snapped!" << std::endl;
+  }
 
   const char *rt_name = "rt:hololux:screenshot";
   if (current_width_ != (uint32_t)width || current_height_ != (uint32_t)height) {
