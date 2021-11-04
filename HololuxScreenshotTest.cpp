@@ -65,5 +65,23 @@ int main() {
     return -1;
   }
 
+  result = app.loadModel("data/single_test.hlf");
+  if (result != 0) {
+    return result;
+  }
+
+  result = app.setCamera(0.0f, 0.0f, 0.6f, glm::radians(40.0f));
+  if (result != 0) {
+    return result;
+  }
+  
+  if (!CheckImage("data/expected30_single.png", glm::radians(30.0f), app)) {
+    return -1;
+  }
+
+  if (!CheckImage("data/expected60_single.png", glm::radians(60.0f), app)) {
+    return -1;
+  }
+
   return 0;
 }
