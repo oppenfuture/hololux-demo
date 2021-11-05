@@ -12,19 +12,18 @@
 - `libEGL.so`
 - `libGLESv2.so`
 
+`Debian`系列安装EGL：
+```bash
+sudo apt install libegl1-mesa
+```
+
 ## 构建和测试示例工程
 
 ### 开发依赖
 
-- `EGL`头文件
 - `gcc 8`
 - `CMake >= 3.16`
 - `make`
-
-`Debian`系列安装EGL头文件：
-```bash
-sudo apt install libegl1-mesa-dev
-```
 
 ### 构建和测试
 

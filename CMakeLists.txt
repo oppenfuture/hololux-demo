@@ -7,9 +7,8 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(OpenGL REQUIRED)
-
 include_directories(dependencies/include)
+include_directories(glad)
 link_directories(dependencies/lib)
 
 set(SOURCES
@@ -19,13 +18,17 @@ set(SOURCES
   MineolaHelper.cpp
   HololuxScreenshot.h
   HololuxScreenshot.cpp
+  glad/egl.c
 )
 
 add_library(hololux_demo SHARED ${SOURCES})
-target_link_libraries(hololux_demo PUBLIC hololux OpenGL::EGL)
+target_link_libraries(hololux_demo PUBLIC hololux ${CMAKE_DL_LIBS})
+
+enable_testing()
 
 add_executable(buildtest HololuxScreenshotBuildTest.cpp)
 target_link_libraries(buildtest hololux_demo)
+add_test(buildtest buildtest)
 
 add_custom_command(TARGET hololux_demo
   COMMAND
@@ -36,8 +39,6 @@ add_custom_command(TARGET hololux_demo
     ${CMAKE_CURRENT_SOURCE_DIR}/artifact
   COMMENT "Copy build artifact"
 )
-
-enable_testing()
 
 add_executable(egltest EGLHelperTest.cpp)
 target_link_libraries(egltest hololux_demo)
