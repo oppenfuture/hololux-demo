@@ -22,7 +22,7 @@ set(SOURCES
 )
 
 add_library(hololux_demo SHARED ${SOURCES})
-target_link_libraries(hololux_demo PUBLIC hololux ${CMAKE_DL_LIBS})
+target_link_libraries(hololux_demo PRIVATE hololux ${CMAKE_DL_LIBS})
 
 enable_testing()
 
@@ -45,11 +45,11 @@ target_link_libraries(egltest hololux_demo)
 add_test(egltest egltest)
 
 add_executable(mineolatest MineolaHelperTest.cpp)
-target_link_libraries(mineolatest hololux_demo)
+target_link_libraries(mineolatest hololux_demo hololux)
 add_test(mineolatest mineolatest)
 
 add_executable(apptest HololuxScreenshotTest.cpp)
-target_link_libraries(apptest hololux_demo imgpp turbojpeg png16 z)
+target_link_libraries(apptest hololux_demo imgpp jpeg png16 z)
 add_custom_command(TARGET apptest
   COMMAND
     ${CMAKE_COMMAND}
