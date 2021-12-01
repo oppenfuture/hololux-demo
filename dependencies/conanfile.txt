@@ -1,8 +1,7 @@
 [requires]
-mineola/1.2.2@oppen/testing
+mineola/1.2.3@oppen/testing
 rapidjson/1.1.0
 lz4/1.9.2
-imgpp/2.1.7@shenfy/testing
 
 [options]
 imgpp:no_ext_libs=False
