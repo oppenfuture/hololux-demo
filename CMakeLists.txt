@@ -6,6 +6,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
 
 include_directories(dependencies/include)
 include_directories(glad)

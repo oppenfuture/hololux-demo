@@ -3,7 +3,7 @@
 ## Dependency
 
 - `gcc 8`
-- `Python >= 3.6`
+- `Python >= 3.9`
 - `Conan`
 - `CMake >= 3.16`
 - `patchelf`
@@ -19,7 +19,7 @@ sudo apt install patchelf
 ```bash
 cd dependencies
 mkdir dbuild && cd dbuild
-conan install .. -s build_type=Debug
+conan install .. -s build_type=Debug -s compiler.libcxx=libstdc++
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 make -j
 python ../../collect_depends.py . ..
@@ -30,7 +30,7 @@ python ../../collect_depends.py . ..
 ```bash
 cd dependencies
 mkdir build && cd build
-conan install ..
+conan install .. -s compiler.libcxx=libstdc++
 cmake ..
 make -j
 python ../../collect_depends.py . ..
