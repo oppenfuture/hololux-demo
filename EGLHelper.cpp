@@ -58,22 +58,30 @@ bool EGLHelper::Initialize(EGLint api) {
     return false;
   }
 
-  EGLDeviceEXT device;
-  EGLint num_devices = 0;
-  auto status = eglQueryDevicesEXT(1, &device, &num_devices);
-  if (status == EGL_FALSE) {
-    std::cerr << "eglQueryDevicesEXT failed" << std::endl;
-    return false;
-  }
+  if (eglQueryDevicesEXT) {
+    EGLDeviceEXT device = nullptr;
+    EGLint num_devices = 0;
+    auto status = eglQueryDevicesEXT(1, &device, &num_devices);
+    if (status == EGL_FALSE) {
+      std::cerr << "eglQueryDevicesEXT failed" << std::endl;
+      return false;
+    }
 
-  display_ = eglGetPlatformDisplayEXT(EGL_PLATFORM_DEVICE_EXT, device, nullptr);
-  if (display_ == EGL_NO_DISPLAY) {
-    std::cerr << "eglGetDisplay failed" << std::endl;
-    return false;
+    display_ = eglGetPlatformDisplayEXT(EGL_PLATFORM_DEVICE_EXT, device, nullptr);
+    if (display_ == EGL_NO_DISPLAY) {
+      std::cerr << "eglGetPlatformDisplayEXT failed" << std::endl;
+      return false;
+    }
+  } else {
+    display_ = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    if (display_ == EGL_NO_DISPLAY) {
+      std::cerr << "eglGetDisplay failed" << std::endl;
+      return false;
+    }
   }
 
   EGLint major = 0, minor = 0;
-  status = eglInitialize(display_, &major, &minor);
+  auto status = eglInitialize(display_, &major, &minor);
   if (status == EGL_FALSE) {
     std::cerr << "eglInitialize failed" << std::endl;
     return false;
