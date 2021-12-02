@@ -78,7 +78,7 @@ class Collector:
     shutil.copy(wolf_header_folder / 'HololuxRenderer.h', self.include_folder)
     shutil.copy(wolf_header_folder / 'NetworkInterface.h', self.include_folder)
     hololux_lib = 'libhololux.so'
-    shutil.copy(build_folder / hololux_lib, self.lib_folder)
+    shutil.copy(build_folder / 'lib' / hololux_lib, self.lib_folder)
     subprocess.check_call(['patchelf', '--set-rpath', '$ORIGIN', str(self.lib_folder / hololux_lib)])
 
 def copy_symlink_and_file(src, dst_folder):

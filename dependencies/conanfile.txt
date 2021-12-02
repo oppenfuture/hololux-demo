@@ -8,4 +8,5 @@ imgpp:no_ext_libs=False
 libjpeg-turbo:shared=True
 
 [generators]
-cmake_find_package
+cmake # For handling gcc ABI
+cmake_find_package # For copying dependencies
